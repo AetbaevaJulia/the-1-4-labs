@@ -154,7 +154,7 @@ class Program
         return res;
     }
 
-    static List<char> GetOperators (List<object> userText) //метод длч вывода операторов из начального выражения
+    static List<char> GetOperators (List<object> userText) //метод для вывода операторов из начального выражения
     {
         List<char> res = new List<char>();
         foreach (var el in userText)
