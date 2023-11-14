@@ -17,7 +17,7 @@ class Program
     {
         userText = userText.Replace(" ", "");
         List<object> result = new List<object>();
-        List<char> stackOper = new List<char>();
+        Stack<char> oper = new Stack<char> ();
         string bufer = string.Empty;
         for (int i = 0; i<userText.Length; i++)
         {
@@ -33,63 +33,52 @@ class Program
                     result.Add(bufer);
                     bufer = string.Empty;
                 }
-                if (stackOper.Count == 0)
-                    stackOper.Add(userText[i]);
+                if (oper.Count == 0)
+                    oper.Push(userText[i]);
                 else
                 {
                     if (userText[i] == '(')
-                        stackOper.Add(userText[i]);
+                        oper.Push(userText[i]);
                     else
                     {
-                        if ((Priority(userText[i]) > Priority(stackOper[^1])) && userText[i] != ')')
-                            stackOper.Add(userText[i]);
-                        else if (Priority(userText[i]) <= Priority(stackOper[^1])  && userText[i] != ')')
+                        if ((Priority(userText[i]) > Priority(oper.Peek())) && userText[i] != ')')
+                            oper.Push(userText[i]);
+                        else if (Priority(userText[i]) <= Priority(oper.Peek())  && userText[i] != ')')
                         {
-                            if (stackOper.Contains('('))
+                            if (oper.Contains('('))
                             {
-                                for (int l = stackOper.Count - 1; l >= 0; l--)
+                                while (oper.Peek() != '(')
                                 {
-                                    if (stackOper[l] != '(')
-                                    {
-                                        result.Add(stackOper[l]);
-                                        stackOper.RemoveAt(l);
-                                    }
-                                    else
-                                        break;
+                                    result.Add(oper.Peek());
+                                    oper.Pop();
                                 }
+                                oper.Push(userText[i]);
+                            }
+                            else if ((Priority(userText[i]) < Priority(oper.Peek()) && (!oper.Contains('('))))
+                            {
+                                while (oper.Count != 0)
+                                {
+                                    result.Add(oper.Peek());
+                                    oper.Pop();
+                                }
+                                oper.Push(userText[i]);
+                            }
 
-                                stackOper.Add(userText[i]);
-                            }
-                            else if ((Priority(userText[i]) < Priority(stackOper[^1])) && (!stackOper.Contains('(')))
+                            else if (Priority(userText[i]) == Priority(oper.Peek()) && (!oper.Contains('(')))
                             {
-                                for (int l = stackOper.Count -1; l>= 0; l--)
-                                {
-                                    result.Add(stackOper[l]);
-                                }
-                                stackOper.Clear();
-                                stackOper.Add(userText[i]);
-                            }
-                            else if ((Priority(userText[i]) == Priority(stackOper[^1])) && (!stackOper.Contains('(')))
-                            {
-                                result.Add(stackOper[^1]);
-                                stackOper.RemoveAt(stackOper.Count-1);
-                                stackOper.Add(userText[i]);
+                                result.Add(oper.Peek());
+                                oper.Pop();
+                                oper.Push(userText[i]);
                             }
                         }
                         else if (userText[i] == ')')
                         {
-
-                            for (int l = stackOper.Count - 1; l >= 0; l--)
+                            while (oper.Peek() != '(')
                             {
-                                if (stackOper[l] != '(')
-                                {
-                                    result.Add(stackOper[l]);
-                                    stackOper.RemoveAt(l);
-                                }
-                                else
-                                    break;
+                                result.Add(oper.Peek());
+                                oper.Pop();
                             }
-                            stackOper.Remove('(');
+                            oper.Pop();
                         }
                     }
                 }
@@ -98,13 +87,13 @@ class Program
             if ((i == userText.Length - 1) && (bufer != string.Empty))
                 result.Add((bufer));
 
-            if ((i == userText.Length-1) && (stackOper.Count != 0))
+            if ((i == userText.Length-1) && (oper.Count != 0))
             {
-                for (int l = stackOper.Count - 1; l >= 0; l--)
+                while (oper.Count != 0)
                 {
-                    result.Add(stackOper[l]);
+                    result.Add(oper.Peek());
+                    oper.Pop();
                 }
-                stackOper.Clear();
             }
         }
         return result;
