@@ -8,9 +8,6 @@ namespace практика_2
 {
     internal class Token
     {
-        public Token() 
-        {
-            
-        }
+
     }
 }

@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace практика_2
 {
     internal class Operation : Token
     {
-
-        public int Priority(char symbol)
+        public  char Symbol { get; set; }
+        public  int Priority { get; set; }
+        
+        public Operation(char symbol) 
         {
-            if (symbol == '(' || symbol == ')') return 0;
-            else if (symbol == '+' || symbol == '-') return 1;
+            Symbol = symbol;
+            Priority = GetPriority(Symbol);
+        }
+
+        private static int GetPriority(char symbol)
+        {
+            if (symbol == '+' || symbol == '-') return 1;
             else return 2;
         }
     }

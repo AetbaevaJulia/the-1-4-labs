@@ -1,93 +1,110 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Numerics;
 using System.Security.Cryptography;
+using System.Text.Json.Serialization;
+using практика_2;
 
 class Program
 {
-    static int Priority(char operators)
-    {
-        if (operators == '(' || operators == ')') return 0;
-        else if (operators == '+' || operators == '-') return 1;
-        else return 2;
-    }
-
-    static List<object> RPN(string userText) //метод для записи в ОПЗ
+    static List<Token> Parse(string userText)
     {
         userText = userText.Replace(" ", "");
-        List<object> result = new List<object>();
-        Stack<char> oper = new Stack<char> ();
-        string bufer = string.Empty;
-        for (int i = 0; i<userText.Length; i++)
+        string buffer = string.Empty;
+        List<Token> result = new List<Token>();
+        for (int i = 0; i < userText.Length; i++)
         {
-            if (char.IsDigit(userText[i]))
+            if (Number.IsDigitNumber(userText[i]) || userText[i] == ',')
             {
-                bufer += userText[i];
+                buffer += userText[i];
             }
-
-            if (!char.IsDigit(userText[i]))
+            else
             {
-                if (bufer != string.Empty)
+                if (buffer != string.Empty)
                 {
-                    result.Add(bufer);
-                    bufer = string.Empty;
+                    double num = Convert.ToDouble(buffer);
+                    result.Add(new Number(num));
+                    buffer = string.Empty;
                 }
-                if (oper.Count == 0)
-                    oper.Push(userText[i]);
+                if (userText[i] != ')' && userText[i] != '(')
+                {
+                    result.Add(new Operation(userText[i]));
+                }
                 else
                 {
-                    if (userText[i] == '(')
-                        oper.Push(userText[i]);
-                    else
-                    {
-                        if ((Priority(userText[i]) > Priority(oper.Peek())) && userText[i] != ')')
-                            oper.Push(userText[i]);
-                        else if (Priority(userText[i]) <= Priority(oper.Peek())  && userText[i] != ')')
-                        {
-                            if (oper.Contains('('))
-                            {
-                                while (oper.Peek() != '(')
-                                {
-                                    result.Add(oper.Peek());
-                                    oper.Pop();
-                                }
-                                oper.Push(userText[i]);
-                            }
-                            else if ((Priority(userText[i]) < Priority(oper.Peek()) && (!oper.Contains('('))))
-                            {
-                                while (oper.Count != 0)
-                                {
-                                    result.Add(oper.Peek());
-                                    oper.Pop();
-                                }
-                                oper.Push(userText[i]);
-                            }
+                    result.Add(new Parenthesis(userText[i]));
 
-                            else if (Priority(userText[i]) == Priority(oper.Peek()) && (!oper.Contains('(')))
-                            {
-                                result.Add(oper.Peek());
-                                oper.Pop();
-                                oper.Push(userText[i]);
-                            }
-                        }
-                        else if (userText[i] == ')')
-                        {
-                            while (oper.Peek() != '(')
-                            {
-                                result.Add(oper.Peek());
-                                oper.Pop();
-                            }
-                            oper.Pop();
-                        }
-                    }
                 }
             }
+            if ((i == userText.Length - 1) && (buffer != string.Empty))
+            {
+                double num = Convert.ToDouble(buffer);
+                result.Add(new Number(num));
+                buffer = string.Empty;
+            }
+        }
+        return result;
+    }
 
-            if ((i == userText.Length - 1) && (bufer != string.Empty))
-                result.Add((bufer));
-
-            if ((i == userText.Length-1) && (oper.Count != 0))
+    static List<Token> ToRPN(List<Token> token)
+    {
+        List<Token> result = new List<Token>();
+        Stack<Token> oper = new Stack<Token>();
+        for (int i = 0; i < token.Count; i++)
+        {
+            if (token[i] is Number num)
+            {
+                result.Add(num);
+            }
+            else if (!(token[i] is Number) && oper.Count == 0)
+            {
+                oper.Push(token[i]);
+                continue;
+            }
+            else if (token[i] is Operation operation)
+            {
+                if (!(oper.Peek() is Parenthesis))
+                {
+                    Operation operPeek = (Operation)oper.Peek();
+                    if (operation.Priority > operPeek.Priority)
+                    {
+                        oper.Push(token[i]);
+                    }
+                    else if (operation.Priority <= operPeek.Priority)
+                    {
+                        while (oper.Count > 0 && !(token is Parenthesis))
+                        {
+                            result.Add(oper.Peek());
+                            oper.Pop();
+                        }
+                        oper.Push(token[i]);
+                    }
+                }
+                else
+                {
+                    oper.Push(token[i]);
+                    continue;
+                }
+            }
+            else if (token[i] is Parenthesis par)
+            {
+                if (Parenthesis.IsClosedParenthesis(par.Symbol))
+                {
+                    while (!(oper.Peek() is Parenthesis))
+                    {
+                        result.Add(oper.Peek());
+                        oper.Pop();
+                    }
+                    oper.Pop();
+                }
+                else
+                {
+                    oper.Push(token[i]);
+                }
+            }
+            if (i == token.Count-1 && oper.Count != 0)
             {
                 while (oper.Count != 0)
                 {
@@ -95,74 +112,70 @@ class Program
                     oper.Pop();
                 }
             }
+
         }
         return result;
-    }
+    }        
 
-    static bool IsOperator(char symbol) //метод для определения оператора
+    static string ToPrint(List<Token> rpn)
     {
-        string operators = "+-*/";
-        if (operators.Contains(symbol)) return true;
-        else return false;
-    }
-
-    static double TheOperation (char oper, int num1, int num2)
-    {
-        if (oper == '+') return num1 + num2;
-        else if (oper == '-') return num1 - num2;
-        else if (oper == '*') return num1 * num2;
-        else return num1 / num2;     
-    }
-
-
-    static List<object> Calculate(List<object> userText)
-    { int i = 0;
-        while (userText.Count > 1)
+        string res = string.Empty;
+        foreach (Token token in rpn)
         {
-            if (i > userText.Count)
-                i = 0;
-            if (userText[i] is char && IsOperator((char)userText[i]))
+            if (token is Parenthesis par)
             {
-                userText[i-2] = TheOperation((char)userText[i], Convert.ToInt16(userText[i - 2]), Convert.ToInt16(userText[i - 1]));
-                userText.RemoveAt(i);
-                userText.RemoveAt(i - 1);
-                i = 0;
+                res += par.Symbol + " ";
             }
-            i++;
-        }
-        return userText;
-    }
-    static List<int> GetNums (List<object> userText) //метод для вывода чисел из начального выражения
-    {
-        List<int> res = new List<int>();
-        foreach (var el in userText)
-        {
-            if (!(el is char))
-                res.Add(Convert.ToInt32(el));
+            else if (token is Operation oper)
+            {
+                res += oper.Symbol + " ";
+            }
+            else if (token is Number num)
+            {
+                res += num.Value + " ";
+            }
         }
         return res;
     }
 
-    static List<char> GetOperators (List<object> userText) //метод для вывода операторов из начального выражения
+    static double PerformTheOperation(Number num1, Number num2, Operation oper)
     {
-        List<char> res = new List<char>();
-        foreach (var el in userText)
-        {
-            if (el is char)
-                res.Add(Convert.ToChar(el));
-        }
-        return res;
+        if (oper.Symbol == '+') return num1.Value + num2.Value;
+        else if (oper.Symbol == '-') return num1.Value - num2.Value;
+        else if(oper.Symbol == '*') return num1.Value * num2.Value;
+        else return num1.Value / num2.Value;
     }
 
-    static void Main ()
+    static double Calculate(List<Token> rpn)
     {
-        Console.Write("Your mathematical expression: ");
+        int index = 0;
+        while (rpn.Count != 1)
+        {
+            if (index > rpn.Count)
+            {
+                index = 0;
+            }
+            if (rpn[index] is Operation)
+            {
+                rpn[index - 2] = new Number(PerformTheOperation((Number)rpn[index - 2], (Number)rpn[index - 1], (Operation)rpn[index]));
+                rpn.RemoveAt(index);
+                rpn.RemoveAt(index-1);
+                index = 0;
+            }
+            index++;
+        }
+        Number result = (Number)rpn[0];
+        return result.Value;
+    }
+
+
+    static void Main()
+    {
+        Console.Write("Введите математическое выражение: ");
         string userText = Console.ReadLine();
-        Console.WriteLine();
-        List<object> rpnUserText = RPN(userText);
-        Console.WriteLine("RPN: " + string.Join(" ", rpnUserText)+"\n");
-        Console.WriteLine("The nums: " + string.Join(" ", GetNums(rpnUserText)) + "\n");
-        Console.WriteLine("The operators: " + string.Join (" ", GetOperators(rpnUserText)) + "\n");
-        Console.WriteLine("The answer: " + Calculate(rpnUserText)[0]);
+        List<Token> tokens = Parse(userText);
+        List<Token> rpn = ToRPN(tokens);
+        Console.WriteLine("Ваше выражение в ОПЗ: " + ToPrint(rpn));
+        Console.WriteLine("Значение выражения: " + Calculate(rpn));
     }
 }
