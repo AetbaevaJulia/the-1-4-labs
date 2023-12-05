@@ -122,7 +122,7 @@ class Program
         return result;
     }        
 
-    static string ToPrint(List<Token> rpn)
+    static string ToString(List<Token> rpn)
     {
         string res = string.Empty;
         foreach (Token token in rpn)
@@ -172,6 +172,32 @@ class Program
         Number result = (Number)rpn[0];
         return result.Value;
     }
+    
+    static List<Token> GetNums(List<Token> rpn)
+    {
+        List<Token> result = new List<Token>();
+        foreach (Token token in rpn)
+        {
+            if (token is Number)
+            {
+                result.Add((Number)token);
+            }
+        }
+        return result;
+    }
+
+    static List<Token> GetOperators(List<Token> rpn)
+    {
+        List<Token> result = new List<Token> ();
+        foreach (Token token in rpn)
+        {
+            if (token is Operation)
+            {
+                result.Add((Operation)token);
+            }
+        }
+        return result;
+    }
 
     static void Main()
     {
@@ -179,7 +205,11 @@ class Program
         string userText = Console.ReadLine();
         List<Token> tokens = Parse(userText);
         List<Token> rpn = ToRPN(tokens);
-        Console.WriteLine("Ваше выражение в ОПЗ: " + ToPrint(rpn));
+        List<Token> Nums = GetNums(rpn);
+        List<Token> Operators = GetOperators(rpn);
+        Console.WriteLine("Ваше выражение в ОПЗ: " + ToString(rpn));
+        Console.WriteLine("Числа в вашем выражении: " + ToString(Nums));
+        Console.WriteLine("Операвторы в вашем выражении: " + ToString(Operators));
         Console.WriteLine("Значение выражения: " + Calculate(rpn));
     }
 }
