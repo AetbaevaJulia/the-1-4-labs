@@ -58,13 +58,13 @@ class Program
             {
                 result.Add(num);
             }
-            else if (!(token[i] is Number) && oper.Count == 0)
-            {
-                oper.Push(token[i]);
-                continue;
-            }
             else if (token[i] is Operation operation)
             {
+                if (oper.Count == 0)
+                {
+                    oper.Push(token[i]);
+                    continue;
+                }
                 if (!(oper.Peek() is Parenthesis))
                 {
                     Operation operPeek = (Operation)oper.Peek();
@@ -90,6 +90,11 @@ class Program
             }
             else if (token[i] is Parenthesis par)
             {
+                if (oper.Count == 0)
+                {
+                    oper.Push(token[i]);
+                    continue;
+                }
                 if (Parenthesis.IsClosedParenthesis(par.Symbol))
                 {
                     while (!(oper.Peek() is Parenthesis))
@@ -167,7 +172,6 @@ class Program
         Number result = (Number)rpn[0];
         return result.Value;
     }
-
 
     static void Main()
     {
