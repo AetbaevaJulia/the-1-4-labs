@@ -211,5 +211,6 @@ class Program
         Console.WriteLine("Числа в вашем выражении: " + ToString(Nums));
         Console.WriteLine("Операвторы в вашем выражении: " + ToString(Operators));
         Console.WriteLine("Значение выражения: " + Calculate(rpn));
+        Console.WriteLine();
     }
 }
