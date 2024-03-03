@@ -143,34 +143,30 @@ class Program
         return res;
     }
 
-    static double PerformTheOperation(Number num1, Number num2, Operation oper)
+    static double PerformTheOperation(double num1, double num2, Operation oper)
     {
-        if (oper.Symbol == '+') return num1.Value + num2.Value;
-        else if (oper.Symbol == '-') return num1.Value - num2.Value;
-        else if(oper.Symbol == '*') return num1.Value * num2.Value;
-        else return num1.Value / num2.Value;
+        if (oper.Symbol == '+') return num1 + num2;
+        else if (oper.Symbol == '-') return num1 - num2;
+        else if(oper.Symbol == '*') return num1 * num2;
+        else return num1 / num2;
     }
 
     static double Calculate(List<Token> rpn)
     {
-        int index = 0;
-        while (rpn.Count != 1)
+        Stack<double> res = new Stack<double>();
+        for (int i = 0; i < rpn.Count; i++)
         {
-            if (index > rpn.Count)
+            if (rpn[i] is Number number)
             {
-                index = 0;
+                res.Push(number.Value);
             }
-            if (rpn[index] is Operation)
+            else if (rpn[i] is Operation oper)
             {
-                rpn[index - 2] = new Number(PerformTheOperation((Number)rpn[index - 2], (Number)rpn[index - 1], (Operation)rpn[index]));
-                rpn.RemoveAt(index);
-                rpn.RemoveAt(index-1);
-                index = 0;
+                double firstNum = res.Pop(), secondNum = res.Pop();
+                res.Push(PerformTheOperation(firstNum, secondNum, oper));
             }
-            index++;
         }
-        Number result = (Number)rpn[0];
-        return result.Value;
+        return res.Peek();
     }
     
     static List<Token> GetNums(List<Token> rpn)
@@ -211,6 +207,5 @@ class Program
         Console.WriteLine("Числа в вашем выражении: " + ToString(Nums));
         Console.WriteLine("Операвторы в вашем выражении: " + ToString(Operators));
         Console.WriteLine("Значение выражения: " + Calculate(rpn));
-        Console.WriteLine();
     }
 }
