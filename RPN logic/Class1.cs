@@ -195,7 +195,7 @@ namespace RPN_logic
                 }
                 else if (rpn[i] is Operation oper)
                 {
-                    double firstNum = res.Pop(), secondNum = res.Pop();
+                    double secondNum = res.Pop(), firstNum = res.Pop();
                     res.Push(PerformTheOperation(firstNum, secondNum, oper));
                 }
             }
