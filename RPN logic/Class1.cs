@@ -56,12 +56,12 @@ namespace RPN_logic
 
     public class RpnCalc
     {
-        private List<Token> rpn;
-        public double value;
+        private List<Token> RPN;
+        public double Value;
         public RpnCalc(string mathExpression)
         {
-            rpn = ToRPN(Parse(mathExpression));
-            value = Calculate(rpn);
+            RPN = ToRPN(Parse(mathExpression));
+            Value = Calculate(RPN);
         }
         static List<Token> Parse(string userText)
         {

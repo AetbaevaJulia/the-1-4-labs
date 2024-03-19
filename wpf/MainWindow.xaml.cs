@@ -16,9 +16,6 @@ using RPN_logic;
 
 namespace wpf
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -26,14 +23,14 @@ namespace wpf
             InitializeComponent();
         }
 
-        private void BtForCalculateClick(object sender, RoutedEventArgs e)
+        private void BtForCalculate(object sender, RoutedEventArgs e)
         {
             string userText = tbForInput.Text;
             RpnCalc rpn = new RpnCalc(userText);
-            lbOutput.Content = rpn.value;
+            lbOutput.Content = rpn.Value;
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TbForUsersText(object sender, TextChangedEventArgs e)
         {
 
         }

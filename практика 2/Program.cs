@@ -14,6 +14,6 @@ class Program
         Console.Write("Введите математическое выражение: ");
         string userText = Console.ReadLine();
         RpnCalc rpn = new RpnCalc(userText);
-        Console.WriteLine(rpn.value);
+        Console.WriteLine(rpn.Value);
     }
 }

@@ -15,10 +15,10 @@
             <ColumnDefinition Width="211*"/>
             <ColumnDefinition Width="189*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="tbForInput" TextWrapping="Wrap" Margin="224,53,0,16" TextChanged="TextBox_TextChanged" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" TextAlignment="Center" VerticalAlignment="Top"/>
-        <Button x:Name="btForCalculate" Content="Посчитать" Margin="178,53,0,16" Click="BtForCalculateClick" HorizontalAlignment="Left" Width="90" Grid.Column="1"/>
-        <Label Content="Введите выражение:" Margin="54,53,0,16" HorizontalAlignment="Left"/>
-        <Label Content="Результат:" Margin="132,115,0,175" HorizontalAlignment="Left" Background="{x:Null}" Grid.RowSpan="2"/>
+        <TextBox x:Name="tbForInput" TextWrapping="Wrap" Margin="224,53,0,16" TextChanged="TbForUsersText" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" TextAlignment="Left" VerticalAlignment="Top"/>
+        <Button x:Name="btForCalculate" Content="Посчитать" Margin="178,53,0,16" Click="BtForCalculate" HorizontalAlignment="Left" Width="90" Grid.Column="1"/>
+        <Label x:Name="lbForInput" Content="Введите выражение:" Margin="54,53,0,16" HorizontalAlignment="Left"/>
+        <Label x:Name="lb" Content="Результат:" Margin="132,115,0,175" HorizontalAlignment="Left" Background="{x:Null}" Grid.RowSpan="2"/>
         <Label x:Name="lbOutput" Content="" Margin="224,115,0,175" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
 
     </Grid>
