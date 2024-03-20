@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labs_6"
         mc:Ignorable="d"
-        Title="Lab 6" Height="450" Width="800">
-    <Grid>
-        
+        Title="Lab 6" Height="597" Width="516" WindowStyle="ThreeDBorderWindow" HorizontalAlignment="Center" VerticalAlignment="Top">
+    <Window.Background>
+        <ImageBrush ImageSource="/Без имени.png"/>
+    </Window.Background>
+    <Grid Background="{Binding ActualHeight.Epsilon, ElementName=grid}" x:Name="grid" OpacityMask="#FFCB81B8" Cursor="AppStarting">
+        <TextBox TextWrapping="Wrap" Text="Введите текст" Margin="68,35,67,491" TextChanged="TextBox_TextChanged" Background="#FFFFE1C7" BorderBrush="#FF594739" SelectionBrush="#FFCFA572" Foreground="#FF5A473A" FontFamily="Comic Sans MS" FontSize="14" TextAlignment="Center"/>
+        <Button Content="Посчитать" Margin="68,90,306,430" Background="#FFA04444" Click="Button_Click" Foreground="White" BorderBrush="#FF2E1921" FontFamily="Comic Sans MS" FontSize="14"/>
     </Grid>
 </Window>
