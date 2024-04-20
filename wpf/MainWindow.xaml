@@ -15,11 +15,13 @@
             <ColumnDefinition Width="211*"/>
             <ColumnDefinition Width="189*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="tbForInput" TextWrapping="Wrap" Margin="224,53,0,16" TextChanged="TbForUsersText" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" TextAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbForInputExpression" TextWrapping="Wrap" Margin="224,53,0,16" TextChanged="TbForUsersText" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" TextAlignment="Left" VerticalAlignment="Top"/>
         <Button x:Name="btForCalculate" Content="Посчитать" Margin="178,53,0,16" Click="BtForCalculate" HorizontalAlignment="Left" Width="90" Grid.Column="1"/>
         <Label x:Name="lbForInput" Content="Введите выражение:" Margin="54,53,0,16" HorizontalAlignment="Left"/>
-        <Label x:Name="lb" Content="Результат:" Margin="132,115,0,175" HorizontalAlignment="Left" Background="{x:Null}" Grid.RowSpan="2"/>
-        <Label x:Name="lbOutput" Content="" Margin="224,115,0,175" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Label x:Name="lbForOutput" Content="Результат:" Margin="122,40,0,134" HorizontalAlignment="Left" Background="{x:Null}" Grid.Row="1"/>
+        <Label x:Name="lbOutputResult" Content="" Margin="224,40,0,134" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" Grid.Row="1" Background="Transparent" Foreground="Black"/>
+        <TextBox x:Name="tbForInputValueX" TextWrapping="Wrap" Margin="224,107,0,0" TextChanged="TbForUsersText" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" TextAlignment="Left" VerticalAlignment="Top" Grid.RowSpan="2"/>
+        <Label x:Name="lbForInputValueX" Content="Введите значение Х:" Margin="54,104,0,200" HorizontalAlignment="Left" Grid.RowSpan="2"/>
 
     </Grid>
 </Window>

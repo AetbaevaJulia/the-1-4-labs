@@ -1,8 +1,9 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.Diagnostics.CodeAnalysis;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RPN_logic
 {
-    internal class Token
+    public class Token
     {
 
     }
@@ -42,14 +43,28 @@ namespace RPN_logic
     internal class Number : Token
     {
         public double Value;
+        public string Symbol = string.Empty;
         public Number(double num)
         {
             Value = num;
+        }
+        public Number(string symbol)
+        {
+            Symbol = symbol;
         }
         public static bool IsDigitNumber(char symbol)
         {
             string str = "0123456789";
             if (str.Contains(symbol)) return true;
+            return false;
+        }
+        public static bool IsVariable(char sym)
+        {
+            sym = char.ToUpper(sym);
+            if (sym == 'X' || sym =='Х') //символ или руский или английский
+            {
+                return true;
+            }
             return false;
         }
     }
@@ -58,12 +73,22 @@ namespace RPN_logic
     {
         private List<Token> RPN;
         public double Value;
+        public string RpnForOutput;
+
         public RpnCalc(string mathExpression)
         {
-            RPN = ToRPN(Parse(mathExpression));
-            Value = Calculate(RPN);
+            RPN = ToRPN(ParseMathExpression(mathExpression));
+            Value = CalculateWithoutX(RPN);
+            RpnForOutput = PrintRPN(RPN);
         }
-        static List<Token> Parse(string userText)
+        public RpnCalc(string mathExpression, int valueX)
+        {
+            RPN = ToRPN(ParseMathExpression(mathExpression));
+            Value = CalculateWithX(RPN, valueX);
+            RpnForOutput = PrintRPN(RPN);
+        }
+
+        static List<Token> ParseMathExpression(string userText)
         {
             userText = userText.Replace(" ", "");
             string buffer = string.Empty;
@@ -74,14 +99,18 @@ namespace RPN_logic
                 {
                     buffer += userText[i];
                 }
+                else if (Number.IsVariable(userText[i]))
+                {
+                    result.Add(new Number(Convert.ToString(userText[i])));
+                }
                 else
                 {
                     if (buffer != string.Empty)
                     {
-                        double num = Convert.ToDouble(buffer);
-                        result.Add(new Number(num));
+                        result.Add(new Number(Convert.ToDouble(buffer)));
                         buffer = string.Empty;
                     }
+
                     if (userText[i] != ')' && userText[i] != '(')
                     {
                         result.Add(new Operation(userText[i]));
@@ -89,13 +118,11 @@ namespace RPN_logic
                     else
                     {
                         result.Add(new Parenthesis(userText[i]));
-
                     }
                 }
                 if ((i == userText.Length - 1) && (buffer != string.Empty))
                 {
-                    double num = Convert.ToDouble(buffer);
-                    result.Add(new Number(num));
+                    result.Add(new Number(Convert.ToDouble(buffer)));
                     buffer = string.Empty;
                 }
             }
@@ -116,7 +143,7 @@ namespace RPN_logic
                 {
                     if (oper.Count == 0)
                     {
-                        oper.Push(token[i]);
+                        oper.Push(operation);
                         continue;
                     }
                     if (!(oper.Peek() is Parenthesis))
@@ -124,21 +151,21 @@ namespace RPN_logic
                         Operation operPeek = (Operation)oper.Peek();
                         if (operation.Priority > operPeek.Priority)
                         {
-                            oper.Push(token[i]);
+                            oper.Push(operation);
                         }
                         else if (operation.Priority <= operPeek.Priority)
                         {
-                            while (oper.Count > 0 && !(token is Parenthesis))
+
+                            while (oper.Count > 0 && !(oper.Peek() is Parenthesis))
                             {
-                                result.Add(oper.Peek());
-                                oper.Pop();
+                                result.Add(oper.Pop());
                             }
-                            oper.Push(token[i]);
+                            oper.Push(operation);
                         }
                     }
                     else
                     {
-                        oper.Push(token[i]);
+                        oper.Push(operation);
                         continue;
                     }
                 }
@@ -146,21 +173,20 @@ namespace RPN_logic
                 {
                     if (oper.Count == 0)
                     {
-                        oper.Push(token[i]);
+                        oper.Push(par);
                         continue;
                     }
                     if (Parenthesis.IsClosedParenthesis(par.Symbol))
                     {
-                        while (!(oper.Peek() is Parenthesis))
+                        while (oper.Count > 0 && !(oper.Peek() is Parenthesis))
                         {
-                            result.Add(oper.Peek());
-                            oper.Pop();
+                            result.Add(oper.Pop());
                         }
                         oper.Pop();
                     }
                     else
                     {
-                        oper.Push(token[i]);
+                        oper.Push(par);
                     }
                 }
                 if (i == token.Count - 1 && oper.Count != 0)
@@ -184,7 +210,33 @@ namespace RPN_logic
             else return num1 / num2;
         }
 
-        static double Calculate(List<Token> rpn)
+        static double CalculateWithX(List<Token> rpn, int valueX)
+        {
+            Stack<double> res = new Stack<double>();
+            for (int i = 0; i < rpn.Count; i++)
+            {
+                if (rpn[i] is Number number)
+                {
+                    if (number.Symbol == string.Empty)
+                    { 
+                        res.Push(number.Value); 
+                    }
+                    else
+                    {
+                        res.Push(valueX);
+                    }
+
+                }
+                else if (rpn[i] is Operation oper)
+                {
+                    double secondNum = res.Pop(), firstNum = res.Pop();
+                    res.Push(PerformTheOperation(firstNum, secondNum, oper));
+                }
+            }
+            return res.Peek();
+        }
+
+        static double CalculateWithoutX(List<Token> rpn)
         {
             Stack<double> res = new Stack<double>();
             for (int i = 0; i < rpn.Count; i++)
@@ -200,6 +252,30 @@ namespace RPN_logic
                 }
             }
             return res.Peek();
+        }
+
+        static string PrintRPN(List<Token> rpn)
+        {
+            string result = string.Empty;
+            for (int i = 0; i < rpn.Count; i++)
+            {
+                if (rpn[i] is Number num)
+                {
+                    if (num.Symbol == string.Empty)
+                    {
+                        result += Convert.ToString(num.Value) + " ";
+                    }
+                    else
+                    {
+                        result += Convert.ToString(num.Symbol) + " ";
+                    }
+                }
+                else if (rpn[i] is Operation oper)
+                {
+                    result += oper.Symbol + " ";
+                }
+            }
+            return result;
         }
     }
 }

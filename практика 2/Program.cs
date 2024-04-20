@@ -13,7 +13,10 @@ class Program
     {
         Console.Write("Введите математическое выражение: ");
         string userText = Console.ReadLine();
-        RpnCalc rpn = new RpnCalc(userText);
+        Console.Write("Введите значение Х: ");
+        int valueX = Convert.ToInt32(Console.ReadLine());
+        RpnCalc rpn = new RpnCalc(userText, valueX);
+        //Console.WriteLine(rpn.RpnForOutput);
         Console.WriteLine(rpn.Value);
     }
 }

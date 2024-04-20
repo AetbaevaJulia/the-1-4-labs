@@ -25,9 +25,10 @@ namespace wpf
 
         private void BtForCalculate(object sender, RoutedEventArgs e)
         {
-            string userText = tbForInput.Text;
-            RpnCalc rpn = new RpnCalc(userText);
-            lbOutput.Content = rpn.Value;
+            string userText = tbForInputExpression.Text;
+            int valueX = Convert.ToInt32(tbForInputValueX.Text);
+            RpnCalc rpn = new RpnCalc(userText, valueX);
+            lbOutputResult.Content = rpn.Value;
         }
 
         private void TbForUsersText(object sender, TextChangedEventArgs e)
