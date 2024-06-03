@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:wpf"
         mc:Ignorable="d"
-        Title="Калькулятор ОПЗ" Height="370" Width="800">
+        Title="Калькулятор ОПЗ" Height="700" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="175*"/>
@@ -15,13 +15,18 @@
             <ColumnDefinition Width="211*"/>
             <ColumnDefinition Width="189*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="tbForInputExpression" TextWrapping="Wrap" Margin="224,53,0,16" TextChanged="TbForUsersText" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" TextAlignment="Left" VerticalAlignment="Top"/>
-        <Button x:Name="btForCalculate" Content="Посчитать" Margin="178,53,0,16" Click="BtForCalculate" HorizontalAlignment="Left" Width="90" Grid.Column="1"/>
-        <Label x:Name="lbForInput" Content="Введите выражение:" Margin="54,53,0,16" HorizontalAlignment="Left"/>
-        <Label x:Name="lbForOutput" Content="Результат:" Margin="122,40,0,134" HorizontalAlignment="Left" Background="{x:Null}" Grid.Row="1"/>
-        <Label x:Name="lbOutputResult" Content="" Margin="224,40,0,134" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" Grid.Row="1" Background="Transparent" Foreground="Black"/>
-        <TextBox x:Name="tbForInputValueX" TextWrapping="Wrap" Margin="224,107,0,0" TextChanged="TbForUsersText" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="2" TextAlignment="Left" VerticalAlignment="Top" Grid.RowSpan="2"/>
-        <Label x:Name="lbForInputValueX" Content="Введите значение Х:" Margin="54,104,0,200" HorizontalAlignment="Left" Grid.RowSpan="2"/>
+        <TextBox x:Name="tbForInputExpression" TextWrapping="Wrap" Margin="224,31,0,0" TextChanged="TbForUsersText" HorizontalAlignment="Left" Width="352" Height="32" Grid.ColumnSpan="2" TextAlignment="Left" VerticalAlignment="Top"/>
+        <Button x:Name="btForCalculate" Content="Посчитать" Margin="348,265,0,134" Click="BtForCalculate" HorizontalAlignment="Left" Width="90" Grid.Column="1" Grid.Row="1"/>
+        <Label x:Name="lbForInput" Content="Введите выражение:" Margin="54,31,0,38" HorizontalAlignment="Left"/>
+        <Canvas x:Name="canvasForFunc" Grid.ColumnSpan="2" Margin="54,0,0,94" Background="White" Grid.RowSpan="2" ClipToBounds="True" Height="493" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="660" />
+        <Label x:Name="lbForInputStart" Content="Начало:" Margin="270,41,0,0" HorizontalAlignment="Left" Grid.Column="1" Width="96" Height="159" VerticalAlignment="Center" ClipToBounds="True"/>
+        <Label x:Name="lbForInputEnd" Content="Конец:" Margin="270,154,0,370" HorizontalAlignment="Left" Grid.Column="1" Width="96" Grid.RowSpan="2" ClipToBounds="True"/>
+        <Label x:Name="lbForInputStep" Content="Шаг:" Margin="270,37,0,262" HorizontalAlignment="Left" Grid.Column="1" Width="96" Grid.Row="1" ClipToBounds="True"/>
+        <Label x:Name="lbForInputSize" Content="Масштаб:" Margin="270,163,0,183" HorizontalAlignment="Left" Grid.Column="1" Width="96" Grid.Row="1"/>
+        <TextBox x:Name="tbForInputStart" TextWrapping="Wrap" Margin="0,0,34,112" TextChanged="TbForUsersText" TextAlignment="Left" Grid.Column="1" Height="32" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="168" ClipToBounds="True"/>
+        <TextBox x:Name="tbForInputEnd" TextWrapping="Wrap" Margin="270,184,0,9" TextChanged="TbForUsersText" TextAlignment="Left" Grid.Column="1" HorizontalAlignment="Left" Width="168" ClipToBounds="True"/>
+        <TextBox x:Name="tbForInputStep" TextWrapping="Wrap" Margin="270,86,0,0" TextChanged="TbForUsersText" TextAlignment="Left" Grid.Column="1" Grid.Row="1" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="168" ClipToBounds="True"/>
+        <TextBox x:Name="tbForInputSize" TextWrapping="Wrap" Margin="0,0,34,217" TextChanged="TbForUsersText" HorizontalAlignment="Right" Width="168" Height="32" TextAlignment="Left" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" ClipToBounds="True"/>
 
     </Grid>
 </Window>

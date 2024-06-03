@@ -81,7 +81,7 @@ namespace RPN_logic
             Value = CalculateWithoutX(RPN);
             RpnForOutput = PrintRPN(RPN);
         }
-        public RpnCalc(string mathExpression, int valueX)
+        public RpnCalc(string mathExpression, double valueX)
         {
             RPN = ToRPN(ParseMathExpression(mathExpression));
             Value = CalculateWithX(RPN, valueX);
@@ -210,7 +210,7 @@ namespace RPN_logic
             else return num1 / num2;
         }
 
-        static double CalculateWithX(List<Token> rpn, int valueX)
+        static double CalculateWithX(List<Token> rpn, double valueX)
         {
             Stack<double> res = new Stack<double>();
             for (int i = 0; i < rpn.Count; i++)
