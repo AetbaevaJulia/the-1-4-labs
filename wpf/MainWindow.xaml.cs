@@ -25,10 +25,10 @@ namespace wpf
             X = x;
             Y = y;
         }
-        public Point (Point _point)
+        public Point (Point point)
         {
-            X = _point.X;
-            Y = _point.Y;
+            X = point.X;
+            Y = point.Y;
         }
     }
 
@@ -62,7 +62,7 @@ namespace wpf
                 points.Add(new Point(x, y));
             }
 
-            var canvas = new CanvasDrawer(canvasForFunc, points, start, end, step, size);
+            CanvasDrawer func = new CanvasDrawer(canvasForFunc, points, start, end, step, size);
         }
 
         private void TbForUsersText(object sender, TextChangedEventArgs e)

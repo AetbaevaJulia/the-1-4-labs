@@ -52,23 +52,25 @@ namespace wpf
             DrawAxes(AxisXStart, AxisXEnd, AxisYStart, AxisYEnd);
             DrawFunc(points);
         }
-        public void DrawLine (Point start, Point end, Brush color, int thickness)
+
+        private void DrawLine (Point start, Point end, Brush color, int thickness)
         {
             Line line = new Line();
 
-            line.Visibility = Visibility.Visible;
             line.StrokeThickness = thickness;
             line.Stroke = color;
+
             line.X1 = start.X;
             line.Y1 = start.Y;
+
             line.X2 = end.X;
             line.Y2 = end.Y;
             
             Canvas.Children.Add(line);
         }
-
-        private void DrawAxesSegments()
+        private void DrawAxesPart()
         {
+            //По оси Х
             for (double x = XStart; x <= XEnd; x += Step)
             {
                 if (x == 0)
@@ -76,9 +78,12 @@ namespace wpf
                     continue;
                 }
                 double pointX = new Point(x, 0).ToUiCoordinates(Canvas, Size).X;
+                
                 DrawLine(new Point(pointX, Canvas.ActualHeight / 2 - LenghtSegments / 2), 
                     new Point(pointX, Canvas.ActualHeight / 2 + LenghtSegments / 2), Brushes.Black, 2);
             }
+            
+            //По оси У
             for (double y = XStart; y <= XEnd; y += Step)
             {
                 if (y == 0)
@@ -86,6 +91,7 @@ namespace wpf
                     continue;
                 }
                 double pointY = new Point(0, y).ToUiCoordinates(Canvas, Size).Y;
+                
                 DrawLine(new Point(Canvas.ActualWidth / 2 - LenghtSegments / 2, pointY),
                     new Point(Canvas.ActualWidth / 2 + LenghtSegments / 2, pointY), Brushes.Black, 2);
             }
@@ -93,9 +99,9 @@ namespace wpf
 
         private void DrawAxes(Point startX, Point endX, Point startY, Point endY)
         {
-            DrawLine(startX, endX, Brushes.Black, 2);
-            DrawLine(startY, endY, Brushes.Black, 2);
-            DrawAxesSegments();
+            DrawLine(startX, endX, Brushes.Black, 2); //Вывод оси Х
+            DrawLine(startY, endY, Brushes.Black, 2); //Вывод оси У
+            DrawAxesPart(); //Вывод делений на осях
         }
 
         private void DrawPoint(Point center, int radius, Brush color)
@@ -114,7 +120,7 @@ namespace wpf
             Canvas.Children.Add(ellipse);
         }
 
-        public void DrawFunc(List<Point> points)
+        private void DrawFunc(List<Point> points)
         {
             for (int i = 0; i <= points.Count - 2; i++)
             {

@@ -16,9 +16,9 @@
             <ColumnDefinition Width="189*"/>
         </Grid.ColumnDefinitions>
         <TextBox x:Name="tbForInputExpression" TextWrapping="Wrap" Margin="224,0,0,147" TextChanged="TbForUsersText" VerticalContentAlignment="Center" Grid.ColumnSpan="2" TextAlignment="Left" BorderBrush="Black" Height="44" FontFamily="Verdana" HorizontalAlignment="Left" Width="552" VerticalAlignment="Bottom"/>
-        <Button x:Name="btForCalculate" Content="Посчитать" Margin="309,305,0,0" Click="BtForCalculate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="185" Height="57" VerticalAlignment="Top" BorderBrush="Black"/>
+        <Button x:Name="btForCalculate" Content="Посчитать" Margin="309,265,0,0" Click="BtForCalculate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="185" Height="57" VerticalAlignment="Top" BorderBrush="Black"/>
         <Label x:Name="lbForInput" Content="Введите выражение:" Margin="54,0,0,147" FontFamily="Verdana" Height="42" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="170"/>
-        <Canvas x:Name="canvasForFunc" Grid.ColumnSpan="2" Margin="54,111,0,0" Background="White" Grid.RowSpan="2" ClipToBounds="True" Height="516" VerticalAlignment="Top" HorizontalAlignment="Left" Width="804" />
+        <Canvas x:Name="canvasForFunc" Grid.ColumnSpan="2" Margin="54,111,0,0" Background="White" Grid.RowSpan="2" ClipToBounds="True" Height="506" VerticalAlignment="Top" HorizontalAlignment="Left" Width="804" ></Canvas>
         <Label x:Name="lbForInputStart" Content="Начало:" Margin="270,0,0,139" Grid.Column="1" HorizontalAlignment="Left" Width="263" HorizontalContentAlignment="Center" Height="34" VerticalAlignment="Bottom" FontFamily="Verdana" />
         <Label x:Name="lbForInputEnd" Content="Конец:" Margin="270,0,0,37" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Width="263" Height="33" VerticalAlignment="Bottom" FontFamily="Verdana"/>
         <Label x:Name="lbForInputStep" Content="Шаг:" Margin="270,27,0,0" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Width="263" Height="31" VerticalAlignment="Top" FontFamily="Verdana"/>
@@ -27,6 +27,5 @@
         <TextBox x:Name="tbForInputEnd" TextWrapping="Wrap" Margin="270,0,0,435" TextChanged="TbForUsersText" TextAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" BorderBrush="Black" Grid.RowSpan="2" Width="263" HorizontalAlignment="Left" FontFamily="Verdana" Height="54" VerticalAlignment="Bottom"/>
         <TextBox x:Name="tbForInputStep" TextWrapping="Wrap" Margin="270,62,0,0" TextChanged="TbForUsersText" TextAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="263" Height="54" BorderBrush="Black" FontFamily="Verdana" />
         <TextBox x:Name="tbForInputSize" TextWrapping="Wrap" Margin="270,156,0,0" TextChanged="TbForUsersText" TextAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="1" BorderBrush="Black" Width="263" Height="54" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Verdana"/>
-
     </Grid>
 </Window>
