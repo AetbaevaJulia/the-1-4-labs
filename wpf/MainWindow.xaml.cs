@@ -59,6 +59,7 @@ namespace wpf
             {
                 var calculater = new RpnCalc(userText, x);
                 double y = calculater.Value;
+
                 points.Add(new Point(x, y));
             }
 

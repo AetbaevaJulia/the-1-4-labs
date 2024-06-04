@@ -16,14 +16,14 @@ namespace wpf
         public static Point ToMathCoordinates(this Point point, Canvas canvas, double size)
         {
             return new Point(
-                (int)((point.X - canvas.ActualWidth / 2) / size),
-                (int)((canvas.ActualHeight / 2 - point.Y) / size));
+                (double)((point.X - canvas.ActualWidth / 2) / size),
+                (double)((canvas.ActualHeight / 2 - point.Y) / size));
         }
         public static Point ToUiCoordinates(this Point point, Canvas canvas, double size)
         {
             return new Point(
-                (int)(point.X * size + canvas.ActualWidth / 2),
-                (int)(canvas.ActualHeight / 2 - point.Y * size));
+                (double)(point.X * size + canvas.ActualWidth / 2),
+                (double)(canvas.ActualHeight / 2 - point.Y * size));
         }
     }
 
@@ -34,7 +34,7 @@ namespace wpf
         private readonly Point AxisXStart, AxisXEnd, AxisYStart, AxisYEnd;
         private readonly double XStart, XEnd, Step, Size;
 
-        private readonly double LenghtSegments = 6;
+        private readonly double LenghtPart = 6;
 
         public CanvasDrawer(Canvas canvas,List<Point> points,double start, double end, double step, double size)
         {
@@ -79,8 +79,8 @@ namespace wpf
                 }
                 double pointX = new Point(x, 0).ToUiCoordinates(Canvas, Size).X;
                 
-                DrawLine(new Point(pointX, Canvas.ActualHeight / 2 - LenghtSegments / 2), 
-                    new Point(pointX, Canvas.ActualHeight / 2 + LenghtSegments / 2), Brushes.Black, 2);
+                DrawLine(new Point(pointX, Canvas.ActualHeight / 2 - LenghtPart / 2), 
+                    new Point(pointX, Canvas.ActualHeight / 2 + LenghtPart / 2), Brushes.Black, 2);
             }
             
             //По оси У
@@ -92,8 +92,8 @@ namespace wpf
                 }
                 double pointY = new Point(0, y).ToUiCoordinates(Canvas, Size).Y;
                 
-                DrawLine(new Point(Canvas.ActualWidth / 2 - LenghtSegments / 2, pointY),
-                    new Point(Canvas.ActualWidth / 2 + LenghtSegments / 2, pointY), Brushes.Black, 2);
+                DrawLine(new Point(Canvas.ActualWidth / 2 - LenghtPart / 2, pointY),
+                    new Point(Canvas.ActualWidth / 2 + LenghtPart / 2, pointY), Brushes.Black, 2);
             }
         }
 
@@ -106,8 +106,8 @@ namespace wpf
 
         private void DrawPoint(Point center, int radius, Brush color)
         {
-            double x = center.X;
-            double y = center.Y;
+            double x = center.X - radius;
+            double y = center.Y - radius;
             Ellipse ellipse = new Ellipse();
 
             ellipse.Width = radius * 2;
@@ -130,7 +130,7 @@ namespace wpf
 
             for (int i = 0; i < points.Count - 1; i++)
             {
-                int radius = 2;
+                int radius = 3;
                 Point center = new Point(points[i].ToUiCoordinates(Canvas, Size));
                 DrawPoint(center, radius, Brushes.Red);
             }
