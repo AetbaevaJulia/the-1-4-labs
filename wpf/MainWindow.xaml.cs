@@ -48,8 +48,8 @@ namespace wpf
         private void DrawFunc()
         {
             string userText = tbForInputExpression.Text;
-            int start = Convert.ToInt32(tbForInputStart.Text);
-            int end = Convert.ToInt32(tbForInputEnd.Text);
+            double start = Convert.ToDouble(tbForInputStart.Text);
+            double end = Convert.ToDouble(tbForInputEnd.Text);
             double step = Convert.ToDouble(tbForInputStep.Text);
             int size = Convert.ToInt32(tbForInputSize.Text);
 

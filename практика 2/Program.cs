@@ -16,7 +16,6 @@ class Program
         Console.Write("Введите значение Х: ");
         int valueX = Convert.ToInt32(Console.ReadLine());
         RpnCalc rpn = new RpnCalc(userText, valueX);
-        //Console.WriteLine(rpn.RpnForOutput);
         Console.WriteLine(rpn.Value);
     }
 }

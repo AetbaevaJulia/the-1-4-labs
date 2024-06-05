@@ -119,12 +119,12 @@ namespace wpf
             for (int i = 0; i <= points.Count - 2; i++)
             {
                 DrawLine(points[i].ToUiCoordinates(_canvas, _size), 
-                    points[i + 1].ToUiCoordinates(_canvas, _size), Brushes.IndianRed, 2);
+                    points[i + 1].ToUiCoordinates(_canvas, _size), Brushes.Red, 2);
             }
 
             for (int i = 0; i < points.Count - 1; i++)
             {
-                int radius = 3;
+                int radius = 2;
                 Point center = new Point(points[i].ToUiCoordinates(_canvas, _size));
                 DrawPoint(center, radius, Brushes.Red);
             }
