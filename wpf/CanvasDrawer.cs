@@ -13,12 +13,6 @@ namespace wpf
 {
     static class PointExtensions
     {
-        public static Point ToMathCoordinates(this Point point, Canvas canvas, double size)
-        {
-            return new Point(
-                (double)((point.X - canvas.ActualWidth / 2) / size),
-                (double)((canvas.ActualHeight / 2 - point.Y) / size));
-        }
         public static Point ToUiCoordinates(this Point point, Canvas canvas, double size)
         {
             return new Point(
@@ -29,27 +23,27 @@ namespace wpf
 
     class CanvasDrawer
     {
-        private Canvas Canvas;
+        private readonly Canvas _canvas;
 
-        private readonly Point AxisXStart, AxisXEnd, AxisYStart, AxisYEnd;
-        private readonly double XStart, XEnd, Step, Size;
+        private readonly Point _axisXStart, _axisXEnd, _axisYStart, _axisYEnd;
+        private readonly double _xStart, _xEnd, _step, _size;
 
-        private readonly double LenghtPart = 6;
+        private readonly double _lenghtPart = 6;
 
         public CanvasDrawer(Canvas canvas,List<Point> points,double start, double end, double step, double size)
         {
-            Canvas = canvas;
-            XStart = start;
-            XEnd = end;
-            Step = step;
-            Size = size;
+            _canvas = canvas;
+            _xStart = start;
+            _xEnd = end;
+            _step = step;
+            _size = size;
 
-            AxisXStart = new Point(0, (double)(Canvas.ActualHeight / 2));
-            AxisXEnd = new Point((double)(Canvas.ActualWidth), (double)(Canvas.ActualHeight / 2));
-            AxisYStart = new Point((double)(Canvas.ActualWidth / 2), (double)(Canvas.ActualHeight));
-            AxisYEnd = new Point((double)(Canvas.ActualWidth / 2), 0);
+            _axisXStart = new Point(0, (double)(_canvas.ActualHeight / 2));
+            _axisXEnd = new Point((double)(_canvas.ActualWidth), (double)(_canvas.ActualHeight / 2));
+            _axisYStart = new Point((double)(_canvas.ActualWidth / 2), (double)(_canvas.ActualHeight));
+            _axisYEnd = new Point((double)(_canvas.ActualWidth / 2), 0);
 
-            DrawAxes(AxisXStart, AxisXEnd, AxisYStart, AxisYEnd);
+            DrawAxes(_axisXStart, _axisXEnd, _axisYStart, _axisYEnd);
             DrawFunc(points);
         }
 
@@ -66,34 +60,34 @@ namespace wpf
             line.X2 = end.X;
             line.Y2 = end.Y;
             
-            Canvas.Children.Add(line);
+            _canvas.Children.Add(line);
         }
         private void DrawAxesPart()
         {
             //По оси Х
-            for (double x = XStart; x <= XEnd; x += Step)
+            for (double x = _xStart; x <= _xEnd; x += _step)
             {
                 if (x == 0)
                 {
                     continue;
                 }
-                double pointX = new Point(x, 0).ToUiCoordinates(Canvas, Size).X;
+                double pointX = new Point(x, 0).ToUiCoordinates(_canvas, _size).X;
                 
-                DrawLine(new Point(pointX, Canvas.ActualHeight / 2 - LenghtPart / 2), 
-                    new Point(pointX, Canvas.ActualHeight / 2 + LenghtPart / 2), Brushes.Black, 2);
+                DrawLine(new Point(pointX, _canvas.ActualHeight / 2 - _lenghtPart / 2), 
+                    new Point(pointX, _canvas.ActualHeight / 2 + _lenghtPart / 2), Brushes.Black, 2);
             }
             
             //По оси У
-            for (double y = XStart; y <= XEnd; y += Step)
+            for (double y = _xStart; y <= _xEnd; y += _step)
             {
                 if (y == 0)
                 {
                     continue;
                 }
-                double pointY = new Point(0, y).ToUiCoordinates(Canvas, Size).Y;
+                double pointY = new Point(0, y).ToUiCoordinates(_canvas, _size).Y;
                 
-                DrawLine(new Point(Canvas.ActualWidth / 2 - LenghtPart / 2, pointY),
-                    new Point(Canvas.ActualWidth / 2 + LenghtPart / 2, pointY), Brushes.Black, 2);
+                DrawLine(new Point(_canvas.ActualWidth / 2 - _lenghtPart / 2, pointY),
+                    new Point(_canvas.ActualWidth / 2 + _lenghtPart / 2, pointY), Brushes.Black, 2);
             }
         }
 
@@ -117,21 +111,21 @@ namespace wpf
             Canvas.SetLeft(ellipse, x);
             Canvas.SetTop(ellipse, y);
 
-            Canvas.Children.Add(ellipse);
+            _canvas.Children.Add(ellipse);
         }
 
         private void DrawFunc(List<Point> points)
         {
             for (int i = 0; i <= points.Count - 2; i++)
             {
-                DrawLine(points[i].ToUiCoordinates(Canvas, Size), 
-                    points[i + 1].ToUiCoordinates(Canvas, Size), Brushes.IndianRed, 2);
+                DrawLine(points[i].ToUiCoordinates(_canvas, _size), 
+                    points[i + 1].ToUiCoordinates(_canvas, _size), Brushes.IndianRed, 2);
             }
 
             for (int i = 0; i < points.Count - 1; i++)
             {
                 int radius = 3;
-                Point center = new Point(points[i].ToUiCoordinates(Canvas, Size));
+                Point center = new Point(points[i].ToUiCoordinates(_canvas, _size));
                 DrawPoint(center, radius, Brushes.Red);
             }
         }
