@@ -21,14 +21,13 @@ namespace RPN_logic
             List<Token> result = new List<Token>();
             for (int i = 0; i < userText.Length; i++)
             {
-                if (Number.IsDigitNumber(userText[i]) || userText[i] == '.')
+                if (Number.IsDigitNumber(userText[i]) || userText[i] == ',')
                 {
                     buffer += userText[i];
                 }
                 else if (char.IsLetter(userText[i]))
                 {
-                    double flag;
-                    if (buffer != string.Empty && double.TryParse(buffer, out flag))
+                    if (buffer != string.Empty && char.IsDigit(buffer[0]))
                     {
                         result.Add(new Number(buffer));
                         buffer = string.Empty;
@@ -40,7 +39,7 @@ namespace RPN_logic
                     if (buffer != string.Empty)
                     {
                         Operation oper = CreatorToken.CreateOperation(buffer);
-                        if (oper != null && oper.IsFunc) //it is operation
+                        if (oper != null && oper.IsFunc)
                         {
                             result.Add(oper);
                         }
@@ -64,7 +63,7 @@ namespace RPN_logic
                         result.Add(CreatorToken.Create(Convert.ToString(userText[i])));
                     }
                 }
-                
+
                 if ((i == userText.Length - 1) && (buffer != string.Empty))
                 {
                     Operation oper = CreatorToken.CreateOperation(buffer);
@@ -85,7 +84,6 @@ namespace RPN_logic
             }
             return result;
         }
-
         static List<Token> ToRPN(List<Token> token)
         {
             List<Token> result = new List<Token>();

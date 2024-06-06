@@ -72,8 +72,8 @@ namespace wpf
                     continue;
                 }
                 double pointX = new Point(x, 0).ToUiCoordinates(_canvas, _size).X;
-                
-                DrawLine(new Point(pointX, _canvas.ActualHeight / 2 - _lenghtPart / 2), 
+
+                DrawLine(new Point(pointX, _canvas.ActualHeight / 2 - _lenghtPart / 2),
                     new Point(pointX, _canvas.ActualHeight / 2 + _lenghtPart / 2), Brushes.Black, 2);
             }
             

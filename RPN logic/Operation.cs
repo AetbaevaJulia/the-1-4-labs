@@ -88,7 +88,8 @@ namespace RPN_logic
         public override int CountArgs => 2;
         public override Number Perform(params Number[] numbers)
         {
-            double num1 = numbers[0].Value, num2 = numbers[1].Value;
+            double num1 = numbers[0].Value;
+            double num2 = numbers[1].Value;
             return new Number(Math.Pow(num1, num2));
         }
     }
@@ -113,8 +114,9 @@ namespace RPN_logic
         public override int CountArgs => 2;
         public override Number Perform(params Number[] numbers)
         {
-            double num1 = numbers[0].Value, num2 = 1 / numbers[1].Value;
-            return new Number(Math.Pow(num1, num2));
+            double num1 = 1 / numbers[0].Value;
+            double num2 = numbers[1].Value;
+            return new Number(Math.Pow(num2, num1));
         }
     }
 
